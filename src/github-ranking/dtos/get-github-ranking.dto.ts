@@ -9,10 +9,9 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { LanguageEnum } from '../enums/language.enum'; // Adjust the import path based on your folder structure
+import { LanguageEnum } from '../enums/language.enum';
 import { isBefore, parseISO } from 'date-fns';
 
-// Custom date validator to ensure date is not in the future
 class IsNotFutureDate {
   validate(date: string) {
     return isBefore(parseISO(date), new Date());
@@ -53,5 +52,5 @@ export class GetGitHubRankingDto {
       'Limit the number of results returned. Must be between 1 and 300.',
   })
   @Type(() => Number)
-  limit = 300; // Default to 300 if not provided
+  limit = 300;
 }
