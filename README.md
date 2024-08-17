@@ -14,6 +14,8 @@ To start the entire application, run the following command:
 
     npm run start:app
 
+Once the application is running, head on to [http://localhost:5000/api](http://localhost:5000/api) to see the Swagger API UI and test the endpoints in real-time.
+
 Prerequisites
 -------------
 
