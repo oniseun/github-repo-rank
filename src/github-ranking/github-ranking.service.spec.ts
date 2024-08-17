@@ -14,14 +14,12 @@ describe('GitHubRankingService', () => {
   let httpService: HttpService;
   let configService: ConfigService;
 
-  const mockCsvData = `
-    rank,item,repo_name,stars,forks,language,repo_url,username,issues,last_commit,description
+  const mockCsvData = `rank,item,repo_name,stars,forks,language,repo_url,username,issues,last_commit,description
     1,top-100-stars,repo-1,10001,501,TypeScript,https://github.com/repo-1,user1,1,2024-01-01T00:00:00Z,Description for repo-1
     2,top-100-stars,repo-2,10002,502,Python,https://github.com/repo-2,user2,2,2024-01-01T00:00:00Z,Description for repo-2
     3,top-100-stars,repo-3,10003,503,TypeScript,https://github.com/repo-3,user3,3,2024-01-01T00:00:00Z,Description for repo-3
     4,top-100-stars,repo-4,10004,504,Python,https://github.com/repo-4,user4,4,2024-01-01T00:00:00Z,Description for repo-4
-    5,top-100-stars,repo-5,10005,505,TypeScript,https://github.com/repo-5,user5,5,2024-01-01T00:00:00Z,Description for repo-5
-  `;
+    5,top-100-stars,repo-5,10005,505,TypeScript,https://github.com/repo-5,user5,5,2024-01-01T00:00:00Z,Description for repo-5`;
 
   const mockGitHubData = [
     {
