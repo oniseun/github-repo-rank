@@ -1,5 +1,5 @@
 import { Controller, Get, Query, BadRequestException } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GitHubRankingService } from './github-ranking.service';
 import { GetGitHubRankingDto } from './dtos/get-github-ranking.dto';
 import { GitHubRepoDto } from './dtos/github-repo.dto';
@@ -12,7 +12,6 @@ export class GitHubRankingController {
 
   @Get()
   @ApiOperation({ summary: 'Get GitHub top repositories' })
-  @ApiQuery({ type: GetGitHubRankingDto, required: false })
   @ApiResponse({
     status: 200,
     description: 'Successful response with GitHub repository rankings',

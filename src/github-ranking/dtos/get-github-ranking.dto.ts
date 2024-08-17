@@ -6,18 +6,22 @@ import {
   Min,
   IsOptional,
   Validate,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  ValidationArguments,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import { LanguageEnum } from '../enums/language.enum';
 import { isBefore, parseISO } from 'date-fns';
 
-class IsNotFutureDate {
-  validate(date: string) {
+@ValidatorConstraint({ name: 'isNotFutureDate', async: false })
+class IsNotFutureDate implements ValidatorConstraintInterface {
+  validate(date: string, args: ValidationArguments) {
     return isBefore(parseISO(date), new Date());
   }
 
-  defaultMessage() {
+  defaultMessage(args: ValidationArguments) {
     return 'Date must not be in the future';
   }
 }
@@ -47,10 +51,12 @@ export class GetGitHubRankingDto {
   @Min(1)
   @Max(300)
   @ApiProperty({
-    example: 10,
+    example: 20,
     description:
       'Limit the number of results returned. Must be between 1 and 300.',
+    default: 20,
   })
   @Type(() => Number)
-  limit = 300;
+  @Transform(({ value }) => value ?? 20)
+  limit?: number = 20;
 }

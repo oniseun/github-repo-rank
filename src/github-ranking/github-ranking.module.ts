@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { GitHubRankingService } from './github-ranking.service';
 import { GitHubRankingController } from './github-ranking.controller';
-import { redisStore } from 'cache-manager-ioredis-yet';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Module({
   imports: [

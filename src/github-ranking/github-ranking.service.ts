@@ -19,27 +19,19 @@ export class GitHubRankingService {
   async getGitHubRanking(params: GetGitHubRankingDto): Promise<GitHubRepo[]> {
     const { date, language, limit } = params;
     const cacheKey = `github-ranking-${date}`;
-    let jsonData: GitHubRepo[];
-
-    // Store TTL value in a constant
     const cacheTTL = this.configService.get<number>('CACHE_TTL_SECONDS', 3600);
 
-    // Step 1: Check if the data for the given date exists in Redis cache
-    const cachedData = await this.cacheManager.get<GitHubRepo[]>(cacheKey);
-
-    if (cachedData) {
-      // Step 2: If exists, store the value in jsonData
-      jsonData = cachedData;
-    } else {
-      // Step 3: If not exist, fetch the CSV data, convert to JSON, and store in Redis
+    let jsonData: GitHubRepo[] = await this.cacheManager.get<GitHubRepo[]>(
+      cacheKey,
+    );
+    if (!jsonData) {
+      console.log('no cached data , getting from server');
       const baseUrl = this.configService.get<string>('GITHUB_RANKING_BASE_URL');
       const url = `${baseUrl}/github-ranking-${date}.csv`;
 
       try {
-        const response = await firstValueFrom(this.httpService.get(url)); // Making an HTTP GET request
+        const response = await firstValueFrom(this.httpService.get(url));
         jsonData = await csv().fromString(response.data);
-
-        // Store the JSON data in Redis with the specified expiration time (TTL as a number)
         await this.cacheManager.set(cacheKey, jsonData, cacheTTL);
       } catch (error) {
         throw new HttpException(
@@ -49,14 +41,12 @@ export class GitHubRankingService {
       }
     }
 
-    // Step 4: Filter by language if specified
     if (language) {
       jsonData = jsonData.filter(
         (repo: GitHubRepo) => repo.language === language,
       );
     }
 
-    // Step 5: Limit the response to the specified limit or default
     const limitedData = jsonData.slice(0, limit);
 
     return limitedData;

@@ -32,7 +32,7 @@
     "@nestjs/swagger": "^7.3.1",
     "@nestjs/typeorm": "^10.0.2",
     "cache-manager": "^5.7.6",
-    "cache-manager-ioredis-yet": "^2.1.1",
+    "cache-manager-redis-store": "^3.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "csvtojson": "^2.0.10",
@@ -44,8 +44,7 @@
     "pino-pretty": "^11.1.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "swagger-ui-express": "^5.0.1",
-    "typeorm": "^0.3.20"
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@golevelup/ts-jest": "^0.5.0",
