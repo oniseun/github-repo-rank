@@ -1,0 +1,5 @@
+PORT=3006
+REDIS_HOST=localhost
+REDIS_PORT=6379
+CACHE_TTL_SECONDS=3600
+GITHUB_RANKING_BASE_URL=https://raw.githubusercontent.com/EvanLi/Github-Ranking/master/Data
