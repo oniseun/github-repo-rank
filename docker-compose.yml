@@ -1,15 +1,16 @@
 version: '3.8'
 
 services:
-  redis-stack:
+  redis:
     image: redis/redis-stack:latest
-    container_name: redis-stack
+    container_name: redis
     restart: always
     ports:
       - "6379:6379"
       - "8001:8001"
     networks:
       - parloa_network
+    hostname: redis-stack.local
 
   backend:
     build:
@@ -18,7 +19,7 @@ services:
     working_dir: /app
     command: /bin/sh -c "npm install && npm run start:dev"
     environment:
-      REDIS_HOST: localhost
+      REDIS_HOST: redis-stack.local
       REDIS_PORT: 6379
       CACHE_TTL_SECONDS: 3600
       GITHUB_RANKING_BASE_URL: https://raw.githubusercontent.com/EvanLi/Github-Ranking/master/Data
@@ -26,9 +27,9 @@ services:
     ports:
       - "5050:5050"
     depends_on:
-      - redis-stack
+      - redis
     volumes:
-      - ./backend:/app
+      - .:/apps
     networks:
       - parloa_network
 

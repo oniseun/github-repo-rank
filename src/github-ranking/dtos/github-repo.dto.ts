@@ -69,19 +69,18 @@ export class GitHubRepoDto {
   })
   description: string;
 
-  // Static method to transform GitHubRepo interface into GitHubRepoDto
   static fromInterface(repo: GitHubRepo): GitHubRepoDto {
     const dto = new GitHubRepoDto();
     dto.rank = repo.rank;
     dto.item = repo.item;
-    dto.repoName = repo.repo_name; // Convert snake_case to camelCase
+    dto.repoName = repo.repo_name;
     dto.stars = repo.stars;
     dto.forks = repo.forks;
     dto.language = repo.language;
-    dto.repoUrl = repo.repo_url; // Convert snake_case to camelCase
+    dto.repoUrl = repo.repo_url;
     dto.username = repo.username;
     dto.issues = repo.issues;
-    dto.lastCommit = new Date(repo.last_commit); // Convert to Date object if needed
+    dto.lastCommit = new Date(repo.last_commit);
     dto.description = repo.description;
     return dto;
   }

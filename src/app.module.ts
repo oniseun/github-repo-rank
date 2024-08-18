@@ -1,12 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GitHubRankingModule } from './github-ranking/github-ranking.module';
 import { LoggerModule } from 'nestjs-pino';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     LoggerModule.forRoot({
       pinoHttp: {
         transport: {
@@ -18,8 +23,18 @@ import { LoggerModule } from 'nestjs-pino';
         },
       },
     }),
-    ConfigModule.forRoot({
+    CacheModule.registerAsync({
       isGlobal: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        store: redisStore as unknown as string,
+        socket: {
+          host: configService.get<string>('REDIS_HOST'),
+          port: configService.get<number>('REDIS_PORT', 6379),
+        },
+        ttl: configService.get<number>('CACHE_TTL_SECONDS'),
+      }),
     }),
     GitHubRankingModule,
   ],

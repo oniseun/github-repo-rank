@@ -25,7 +25,6 @@ export class GitHubRankingService {
       cacheKey,
     );
     if (!jsonData) {
-      console.log('no cached data , getting from server');
       const baseUrl = this.configService.get<string>('GITHUB_RANKING_BASE_URL');
       const url = `${baseUrl}/github-ranking-${date}.csv`;
 
