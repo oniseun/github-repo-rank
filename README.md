@@ -14,7 +14,7 @@ To start the entire application, run the following command:
 
     npm run start:app
 
-Once the application is running, head on to [http://localhost:5000/api](http://localhost:5000/api) to see the Swagger API UI and test the endpoints in real-time.
+Once the application is running, head on to [http://localhost:5050/api](http://localhost:5050/api) to see the Swagger API UI and test the endpoints in real-time.
 
 Prerequisites
 -------------
@@ -49,7 +49,7 @@ Setup Instructions
     
 4.  **Start the Development Server**
     
-    The backend will run on `localhost:5000`:
+    The backend will run on `localhost:5050`:
     
         npm run start:dev
     
@@ -78,7 +78,7 @@ The application requires several environment variables to be set. Use the `.env`
     REDIS_PORT=6379
     CACHE_TTL_SECONDS=3600
     GITHUB_RANKING_BASE_URL=https://raw.githubusercontent.com/EvanLi/Github-Ranking/master/Data
-    PORT=5000
+    PORT=5050
 
 Make sure to replace the placeholder values with the actual values required for your setup.
 
@@ -136,7 +136,7 @@ Here is an example of what your `.env` should look like:
     REDIS_PORT=6379
     CACHE_TTL_SECONDS=3600
     GITHUB_RANKING_BASE_URL=https://raw.githubusercontent.com/EvanLi/Github-Ranking/master/Data
-    PORT=5000
+    PORT=5050
 
 Usage
 -----
@@ -145,9 +145,9 @@ Once the setup is complete, you can start the application by running:
 
     npm run start:dev
 
-The application will be accessible at `http://127.0.0.1:5000`.
+The application will be accessible at `http://127.0.0.1:5050`.
 
 Swagger Documentation
 ---------------------
 
-Swagger documentation for the API can be accessed at `http://localhost:5000/api`.
+Swagger documentation for the API can be accessed at `http://localhost:5050/api`.
