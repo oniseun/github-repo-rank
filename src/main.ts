@@ -4,17 +4,14 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
-import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log'],
-    bufferLogs: process.env.NODE_ENV !== 'production',
+    bufferLogs: true,
   });
-
-  const logger = app.get(Logger);
-  app.useLogger(logger);
-  app.useGlobalInterceptors(new LoggerErrorInterceptor());
+  app.useLogger(app.get(Logger));
   const configService = app.get(ConfigService);
 
   app.enableCors({
