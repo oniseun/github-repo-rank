@@ -3,6 +3,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { LanguageEnum } from './../src/github-ranking/enums/language.enum';
+import { addDays, subDays, format } from 'date-fns';
 
 describe('GitHubRanking API (e2e)', () => {
   let app: INestApplication;
@@ -24,8 +25,10 @@ describe('GitHubRanking API (e2e)', () => {
   });
 
   it('should return 400 when input validation fails (future date)', async () => {
+    const futureDate = format(addDays(new Date(), 2), 'yyyy-MM-dd'); // Current date + 2 days
+
     const invalidParams = {
-      date: '2025-01-01', // Future date
+      date: futureDate, // Future date
       language: LanguageEnum.TypeScript,
       limit: 10,
     };
@@ -75,8 +78,10 @@ describe('GitHubRanking API (e2e)', () => {
   });
 
   it('should return data with expected properties', async () => {
+    const pastDate = format(subDays(new Date(), 2), 'yyyy-MM-dd'); // Current date - 2 days
+
     const validParams = {
-      date: '2024-01-01',
+      date: pastDate,
       limit: 1,
     };
 
