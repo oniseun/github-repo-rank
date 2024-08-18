@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { LanguageEnum } from './../src/github-ranking/enums/language.enum';
@@ -13,6 +13,9 @@ describe('GitHubRanking API (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
+    app.useGlobalPipes(new ValidationPipe());
+
     await app.init();
   });
 
@@ -32,7 +35,7 @@ describe('GitHubRanking API (e2e)', () => {
       .query(invalidParams)
       .expect(400);
 
-    expect(response.body.message).toContain('Bad Request Exception');
+    expect(response.body.message).toContain('Date must not be in the future');
   });
 
   it('should return 400 when input validation fails (out of range limit)', async () => {
@@ -47,28 +50,33 @@ describe('GitHubRanking API (e2e)', () => {
       .query(invalidParams)
       .expect(400);
 
-    expect(response.body.message).toContain('Bad Request Exception');
+    expect(response.body.message).toContain(
+      'limit must not be greater than 300',
+    );
   });
 
   it('should return 400 when input validation fails (invalid language)', async () => {
     const invalidParams = {
       date: '2024-01-01',
-      language: 'InvalidLanguage',
+      language: 'InvalidLanguage', // Invalid enum value
       limit: 10,
     };
+
+    const validEnumValues = Object.values(LanguageEnum).join(', ');
 
     const response = await request(app.getHttpServer())
       .get('/github-ranking')
       .query(invalidParams)
       .expect(400);
 
-    expect(response.body.message).toContain('Bad Request Exception');
+    expect(response.body.message).toContain(
+      `language must be one of the following values: ${validEnumValues}`,
+    );
   });
 
   it('should return data with expected properties', async () => {
     const validParams = {
       date: '2024-01-01',
-      language: LanguageEnum.TypeScript,
       limit: 1,
     };
 
